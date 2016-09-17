@@ -1,7 +1,7 @@
 Main:
 	#set ebx = 0x10000000
-	#set byte[ebx] =['r', 'a', 'i', 'm', 0]
-	#set byte[ebx + 8] =['m','i','a','r',0]
+	#set byte[ebx] =['a', 'r', 'm', 'a', 0]
+	#set byte[ebx + 8] =['a', 'm', 'a', 'r', 0]
 	mov eax, ebx
 	add eax, 8
 	push eax
@@ -19,7 +19,12 @@ Anagram:
 	mov eax, 0
 	mov ebx, 53
 	init: ;init arrays and c in zero
-		mov dword[ebp - eax*4], 0 ; first = {0}
+		;#show eax hex
+		;#show ebp hex
+		mov edx, 0
+		sub edx, eax
+		lea edx, dword[ebp + edx*4]
+		mov edx, 0 ; first = {0}
 		inc eax
 		cmp eax, ebx
 		jnz init
@@ -52,15 +57,19 @@ Anagram:
 	fin_while_b:
 		mov dword[ebp - 208], 0
 		mov eax, dword[ebp]; first[]
-		mov ebx, dword[ebp - 104]; second[]
+		lea ebx, dword[ebp - 104]; second[]
 
 	for:
 		mov ecx, dword[ebp - 208] ;c		
 		cmp ecx, 26
 		jge end_for
-
-		mov edx, dword[eax - ecx*4]; first[c]
-		cmp edx, dword[ebx - ecx * 4]
+		mov esi, 0
+		sub esi, ecx
+		#show esi signed decimal
+		#show ebx hex
+		#show eax hex
+		mov edx, dword[eax + esi*4]; first[c]
+		cmp edx, dword[ebx + esi*4]
 		jne return_zero
 		inc dword[ebp - 208]
 		jmp for
