@@ -56,7 +56,7 @@ Anagram:
 
 	fin_while_b:
 		mov dword[ebp - 208], 0
-		mov eax, dword[ebp]; first[]
+		mov eax, dword[ebp - 4]; first[]
 		lea ebx, dword[ebp - 104]; second[]
 
 	for:
